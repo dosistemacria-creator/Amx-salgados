@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aki Salgados - Sistema de Gestão</title>
+    <style>
+        :root {
+            --laranja: #FF6B35;
+            --amarelo: #FFB238;
+            --vermelho: #D1495B;
+            --azul: #2B4162;
+            --verde: #4CAF50;
+            --cinza-claro: #f5f5f5;
+            --cinza-escuro: #333;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--cinza-claro);
+            color: var(--cinza-escuro);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Cabeçalho */
+        header {
+            background: linear-gradient(to right, var(--laranja), var(--amarelo));
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            border-radius: 0 0 10px 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        /* Menu de navegação */
+        nav {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .nav-btn {
+            background-color: white;
+            color: var(--laranja);
+            border: 2px solid var(--laranja);
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-btn:hover, .nav-btn.active {
+            background-color: var(--laranja);
+            color: white;
+        }
+        
+        /* Seções */
+        .section {
+            display: none;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        h2 {
+            color: var(--laranja);
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--amarelo);
+            padding-bottom: 5px;
+        }
+
+        h3 {
+            margin-top: 20px;
+            margin-bottom: 15px;
+            color: var(--cinza-escuro);
+        }
+        
+        /* Formulários */
+        form {
+            display: grid;
+            gap: 15px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        label {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        input, select, textarea {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        button {
+            background-color: var(--laranja);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            opacity: 0.9;
+        }
+        
+        /* Botões Especiais */
+        .btn-grande {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 200px;
+            height: 120px;
+            margin: 10px;
+            font-size: 1.2rem;
+            background-color: var(--laranja);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .btn-grande:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+        }
+
+        .btn-secundario {
+            background-color: #6c757d;
+        }
+
+        .btn-voltar {
+            background-color: transparent;
+            color: var(--cinza-escuro);
+            border: 1px solid #ddd;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        .btn-voltar:hover {
+            background-color: #eee;
+        }
+        
+        /* Tabelas */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: var(--amarelo);
+            color: var(--cinza-escuro);
+        }
+        
+        tr:hover {
+            background-color: rgba(255, 182, 56, 0.1);
+        }
+        
+        /* Status dos pedidos */
+        .status-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .status-recebido {
+            background-color: #e0e0e0;
+        }
+        
+        .status-producao {
+            background-color: var(--amarelo);
+        }
+        
+        .status-distribuicao {
+            background-color: var(--laranja);
+            color: white;
+        }
+        
+        .status-entregue {
+            background-color: var(--verde);
+            color: white;
+        }
+        
+        /* Alertas */
+        .alert {
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        
+        .alert-warning {
+            background-color: #fff3cd;
+            border: 1px solid #ffecb5;
+            color: #856404;
+        }
+        
+        .alert-danger {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+
+        /* Área de Filtros */
+        .filtros-container {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid #ddd;
+        }
+
+        /* Area de Backup */
+        .backup-area {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #e9ecef;
+            border-radius: 8px;
+            border: 1px dashed #adb5bd;
+        }
+        
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .nav-btn {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+            
+            th, td {
+                padding: 8px 10px;
+                font-size: 0.9rem;
+            }
+            
+            .btn-grande {
+                width: 100%;
+                height: 80px;
+                flex-direction: row;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Aki Salgados</h1>
+            <p>Sistema de Gestão de Pedidos, Produtos e Estoque</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <nav>
+            <button class="nav-btn active" data-section="home">Início & Dados</button>
+            <button class="nav-btn" data-section="pedidos">Pedidos</button>
+            <button class="nav-btn" data-section="produtos">Produtos</button>
+            <button class="nav-btn" data-section="estoque">Estoque</button>
+        </nav>
+        
+        <section id="home" class="section active">
+            <h2>Bem-vindo ao Sistema Aki Salgados</h2>
+            <p>Use o menu acima para navegar entre as diferentes funcionalidades do sistema.</p>
+            <ul style="margin-left: 20px; margin-top: 10px; margin-bottom: 20px;">
+                <li><strong>Pedidos:</strong> Registrar novos pedidos e acompanhar o status</li>
+                <li><strong>Produtos:</strong> Gerenciar o catálogo de produtos e suas receitas</li>
+                <li><strong>Estoque:</strong> Controlar as matérias-primas e receber alertas de baixa quantidade</li>
+            </ul>
+
+            <div class="backup-area">
+                <h3>💾 Banco de Dados Local e Backup</h3>
+                <p style="margin-bottom: 15px;">O sistema salva automaticamente seus dados neste navegador. Para garantir a segurança dos dados ou usar em outro computador, use as opções abaixo:</p>
+                
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button onclick="baixarBackup()" style="background-color: var(--azul);">⬇️ Baixar Backup (Salvar Dados)</button>
+                    <button onclick="document.getElementById('input-restore').click()" style="background-color: var(--verde);">⬆️ Restaurar Backup (Carregar Dados)</button>
+                    <input type="file" id="input-restore" style="display: none;" accept=".json" onchange="restaurarBackup(this)">
+                </div>
+                <p style="font-size: 0.85rem; color: #666; margin-top: 10px;">*Recomendação: Baixe um backup ao final de cada dia de trabalho.</p>
+            </div>
+        </section>
+        
+        <section id="pedidos" class="section">
+            <h2>Gestão de Pedidos</h2>
+            
+            <div id="pedidos-dashboard" style="display: block;">
+                <p>O que você deseja fazer?</p>
+                <div style="display: flex; justify-content: center; flex-wrap: wrap; margin-top: 20px;">
+                    <button class="btn-grande" id="btn-dash-novo">
+                        <span style="font-size: 2rem;">📝</span>
+                        Registrar Novo Pedido
+                    </button>
+                    <button class="btn-grande" id="btn-dash-ver" style="background-color: var(--amarelo); color: var(--cinza-escuro);">
+                        <span style="font-size: 2rem;">📋</span>
+                        Ver Histórico
+                    </button>
+                </div>
+            </div>
+            
+            <div id="novo-pedido-container" class="subsection" style="display: none;">
+                <button class="btn-voltar" onclick="mostrarDashboardPedidos()">← Voltar ao Menu de Pedidos</button>
+                <h3>Registrar Novo Pedido</h3>
+                <form id="form-pedido">
+                    <div class="form-group">
+                        <label for="cliente">Nome do Cliente:</label>
+                        <input type="text" id="cliente" required placeholder="Ex: Maria Silva">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="data-entrega">Data de Entrega:</label>
+                        <input type="date" id="data-entrega" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="observacao">Observação:</label>
+                        <textarea id="observacao" rows="3" placeholder="Ex: Entregar na portaria, sem cebola, etc."></textarea>
+                    </div>
+                    
+                    <div class="form-group" style="background: #f9f9f9; padding: 15px; border-radius: 5px; border: 1px solid #eee;">
+                        <label style="color: var(--laranja); font-size: 1.1rem;">Produtos do Pedido (quantidade em kg):</label>
+                        <div id="produtos-pedido">
+                            <p style="color: #666; font-style: italic;">Carregando produtos...</p>
+                        </div>
+                    </div>
+                    
+                    <div id="alerta-estoque" style="display: none;"></div>
+                    
+                    <button type="submit" style="margin-top: 10px;">Confirmar Pedido</button>
+                </form>
+            </div>
+            
+            <div id="ver-pedidos-container" class="subsection" style="display: none;">
+                <button class="btn-voltar" onclick="mostrarDashboardPedidos()">← Voltar ao Menu de Pedidos</button>
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap;">
+                    <h3>Histórico de Pedidos</h3>
+                    <button onclick="mostrarNovoPedido()" style="font-size: 0.9rem;">+ Novo Pedido</button>
+                </div>
+
+                <div class="filtros-container">
+                    <label for="filtro-status">Filtrar por Status:</label>
+                    <select id="filtro-status" onchange="atualizarTabelaPedidos()">
+                        <option value="ativos" selected>Pedidos Ativos (Ocultar Entregues)</option>
+                        <option value="todos">Todos os Pedidos</option>
+                        <option value="recebido">Recebido</option>
+                        <option value="em produção">Em Produção</option>
+                        <option value="em distribuição">Em Distribuição</option>
+                        <option value="entregue">Entregues (Histórico)</option>
+                    </select>
+                </div>
+
+                <table id="tabela-pedidos">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Cliente</th>
+                            <th>Data Entrega</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        </tbody>
+                </table>
+                <p id="msg-sem-pedidos" style="text-align: center; margin-top: 20px; color: #666; display: none;">Nenhum pedido encontrado com este filtro.</p>
+            </div>
+        </section>
+        
+        <section id="produtos" class="section">
+            <h2>Catálogo de Produtos</h2>
+            <p style="margin-bottom: 15px;">Aqui você pode cadastrar os produtos e suas receitas (para 10kg do produto):</p>
+            
+            <form id="form-produto" style="margin-bottom: 20px; background: #fff; padding: 15px; border: 1px solid #eee; border-radius: 5px;">
+                <div class="form-group">
+                    <label for="nome-produto">Nome do Produto:</label>
+                    <input type="text" id="nome-produto" required placeholder="Ex: Coxinha de Frango">
+                </div>
+                
+                <div class="form-group">
+                    <label>Ingredientes (Matéria-Prima e Quantidade para 10kg):</label>
+                    <div id="ingredientes-produto">
+                        <div class="ingrediente-item" style="margin-bottom: 10px;">
+                            <select class="materia-prima-select" style="width: 200px;">
+                                <option value="">Carregando...</option>
+                            </select>
+                            <input type="number" class="quantidade-ingrediente" placeholder="Qtd" step="0.01" min="0" style="width: 100px;">
+                            <span class="unidade-ingrediente"></span>
+                            <button type="button" class="remover-ingrediente" style="background-color: var(--vermelho); padding: 5px 10px; font-size: 0.8rem;">X</button>
+                        </div>
+                    </div>
+                    <button type="button" id="adicionar-ingrediente" class="btn-secundario" style="margin-top: 10px; width: auto; align-self: flex-start;">+ Adicionar Ingrediente</button>
+                </div>
+                
+                <button type="submit">Salvar Produto</button>
+            </form>
+            
+            <h3>Produtos Cadastrados</h3>
+            <table id="tabela-produtos">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Ingredientes (Base 10kg)</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    </tbody>
+            </table>
+        </section>
+        
+        <section id="estoque" class="section">
+            <h2>Controle de Estoque</h2>
+            <p style="margin-bottom: 15px;">Aqui você pode gerenciar as matérias-primas em estoque:</p>
+            
+            <form id="form-estoque" style="margin-bottom: 20px; background: #fff; padding: 15px; border: 1px solid #eee; border-radius: 5px;">
+                <div class="form-group">
+                    <label for="nome-material">Nome do Material:</label>
+                    <input type="text" id="nome-material" required placeholder="Ex: Farinha de Trigo">
+                </div>
+                
+                <div class="form-group">
+                    <label for="unidade-material">Unidade de Medida:</label>
+                    <select id="unidade-material" required>
+                        <option value="">Selecione</option>
+                        <option value="kg">Quilograma (kg)</option>
+                        <option value="L">Litro (L)</option>
+                        <option value="un">Unidade (un)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="quantidade-material">Quantidade Atual:</label>
+                    <input type="number" id="quantidade-material" step="0.01" min="0" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="quantidade-minima">Quantidade Mínima (Para Alerta):</label>
+                    <input type="number" id="quantidade-minima" step="0.01" min="0" required>
+                </div>
+                
+                <button type="submit">Adicionar ao Estoque</button>
+            </form>
+            
+            <h3>Materiais em Estoque</h3>
+            <div id="alertas-estoque"></div>
+            <table id="tabela-estoque">
+                <thead>
+                    <tr>
+                        <th>Material</th>
+                        <th>Unidade</th>
+                        <th>Quantidade</th>
+                        <th>Mínimo</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    </tbody>
+            </table>
+        </section>
+    </div>
+
+    <script>
+        // --- GESTÃO DE DADOS E PERSISTÊNCIA ---
+        
+        let produtos = JSON.parse(localStorage.getItem('aki-salgados-produtos')) || [];
+        let estoque = JSON.parse(localStorage.getItem('aki-salgados-estoque')) || [];
+        let pedidos = JSON.parse(localStorage.getItem('aki-salgados-pedidos')) || [];
+        
+        function salvarDados() {
+            localStorage.setItem('aki-salgados-produtos', JSON.stringify(produtos));
+            localStorage.setItem('aki-salgados-estoque', JSON.stringify(estoque));
+            localStorage.setItem('aki-salgados-pedidos', JSON.stringify(pedidos));
+        }
+
+        // Função para Baixar Backup (JSON)
+        function baixarBackup() {
+            const dados = {
+                data: new Date().toLocaleDateString(),
+                produtos: produtos,
+                estoque: estoque,
+                pedidos: pedidos
+            };
+            
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dados));
+            const downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", dataStr);
+            downloadAnchorNode.setAttribute("download", "backup_aki_salgados_" + new Date().toISOString().slice(0,10) + ".json");
+            document.body.appendChild(downloadAnchorNode);
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+        }
+
+        // Função para Restaurar Backup
+        function restaurarBackup(input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const dados = JSON.parse(e.target.result);
+                    if (dados.produtos && dados.estoque && dados.pedidos) {
+                        if(confirm('Isso irá substituir todos os dados atuais pelos dados do arquivo. Deseja continuar?')) {
+                            produtos = dados.produtos;
+                            estoque = dados.estoque;
+                            pedidos = dados.pedidos;
+                            salvarDados();
+                            location.reload(); // Recarrega para aplicar mudanças
+                        }
+                    } else {
+                        alert('Arquivo de backup inválido.');
+                    }
+                } catch (error) {
+                    alert('Erro ao ler o arquivo. Certifique-se que é um backup válido.');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // --- ELEMENTOS DOM E NAVEGAÇÃO ---
+        const navBtns = document.querySelectorAll('.nav-btn');
+        const sections = document.querySelectorAll('.section');
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Navegação Principal
+            navBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const targetSection = this.getAttribute('data-section');
+                    
+                    navBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    sections.forEach(section => {
+                        section.classList.remove('active');
+                        if (section.id === targetSection) {
+                            section.classList.add('active');
+                        }
+                    });
+                    
+                    // Resetar a view de pedidos para o dashboard ao trocar de aba
+                    if (targetSection === 'pedidos') {
+                        mostrarDashboardPedidos();
+                    }
+                });
+            });
+            
+            // Navegação Interna de Pedidos
+            document.getElementById('btn-dash-novo').addEventListener('click', mostrarNovoPedido);
+            document.getElementById('btn-dash-ver').addEventListener('click', mostrarVerPedidos);
+            
+            // Inicialização de Dados
+            carregarProdutosPedido();
+            carregarMateriasPrimasProdutos();
+            atualizarTabelaProdutos();
+            atualizarTabelaEstoque();
+            
+            // Listeners de Formulários
+            document.getElementById('form-produto').addEventListener('submit', salvarProduto);
+            document.getElementById('form-estoque').addEventListener('submit', salvarMaterialEstoque);
+            document.getElementById('form-pedido').addEventListener('submit', salvarPedido);
+            document.getElementById('adicionar-ingrediente').addEventListener('click', adicionarIngrediente);
+            
+            // Listener global para remover ingredientes
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('remover-ingrediente')) {
+                    e.target.parentElement.remove();
+                }
+            });
+        });
+
+        // Funções de UI para Pedidos
+        function mostrarDashboardPedidos() {
+            document.getElementById('pedidos-dashboard').style.display = 'block';
+            document.getElementById('novo-pedido-container').style.display = 'none';
+            document.getElementById('ver-pedidos-container').style.display = 'none';
+        }
+
+        function mostrarNovoPedido() {
+            document.getElementById('pedidos-dashboard').style.display = 'none';
+            document.getElementById('ver-pedidos-container').style.display = 'none';
+            document.getElementById('novo-pedido-container').style.display = 'block';
+            carregarProdutosPedido(); // Atualiza lista de produtos disponíveis
+        }
+
+        function mostrarVerPedidos() {
+            document.getElementById('pedidos-dashboard').style.display = 'none';
+            document.getElementById('novo-pedido-container').style.display = 'none';
+            document.getElementById('ver-pedidos-container').style.display = 'block';
+            atualizarTabelaPedidos(); // Carrega tabela
+        }
+        
+        // --- LÓGICA DE PRODUTOS ---
+        
+        function carregarMateriasPrimasProdutos() {
+            const selects = document.querySelectorAll('.materia-prima-select');
+            selects.forEach(select => {
+                const valorAtual = select.value;
+                select.innerHTML = '<option value="">Selecione a matéria-prima</option>';
+                estoque.forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item.id;
+                    option.textContent = `${item.nome} (${item.unidade})`;
+                    select.appendChild(option);
+                });
+                if(valorAtual) select.value = valorAtual;
+            });
+        }
+        
+        function adicionarIngrediente() {
+            const container = document.getElementById('ingredientes-produto');
+            const novoIngrediente = document.createElement('div');
+            novoIngrediente.className = 'ingrediente-item';
+            novoIngrediente.style.marginBottom = '10px';
+            novoIngrediente.innerHTML = `
+                <select class="materia-prima-select" style="width: 200px;">
+                    <option value="">Selecione a matéria-prima</option>
+                </select>
+                <input type="number" class="quantidade-ingrediente" placeholder="Qtd" step="0.01" min="0" style="width: 100px;">
+                <span class="unidade-ingrediente"></span>
+                <button type="button" class="remover-ingrediente" style="background-color: var(--vermelho); padding: 5px 10px; font-size: 0.8rem;">X</button>
+            `;
+            container.appendChild(novoIngrediente);
+            carregarMateriasPrimasProdutos();
+        }
+        
+        function salvarProduto(e) {
+            e.preventDefault();
+            
+            const nomeProduto = document.getElementById('nome-produto').value;
+            const ingredientesItems = document.querySelectorAll('.ingrediente-item');
+            
+            const ingredientes = [];
+            let valido = true;
+            
+            ingredientesItems.forEach(item => {
+                const materiaPrimaSelect = item.querySelector('.materia-prima-select');
+                const quantidadeInput = item.querySelector('.quantidade-ingrediente');
+                
+                if (materiaPrimaSelect.value && quantidadeInput.value) {
+                    const materiaPrima = estoque.find(item => item.id == materiaPrimaSelect.value);
+                    ingredientes.push({
+                        materiaPrimaId: materiaPrimaSelect.value,
+                        nome: materiaPrima.nome,
+                        quantidade: parseFloat(quantidadeInput.value),
+                        unidade: materiaPrima.unidade
+                    });
+                } else if (materiaPrimaSelect.value || quantidadeInput.value) {
+                    valido = false;
+                }
+            });
+            
+            if (!valido || ingredientes.length === 0) {
+                alert('Adicione pelo menos um ingrediente completo (material e quantidade) para o produto.');
+                return;
+            }
+            
+            const novoProduto = {
+                id: Date.now(),
+                nome: nomeProduto,
+                ingredientes: ingredientes
+            };
+            
+            produtos.push(novoProduto);
+            salvarDados();
+            
+            document.getElementById('form-produto').reset();
+            document.getElementById('ingredientes-produto').innerHTML = ''; // Limpa ingredientes
+            adicionarIngrediente(); // Adiciona um campo vazio
+            
+            atualizarTabelaProdutos();
+            alert('Produto salvo com sucesso!');
+        }
+        
+        function atualizarTabelaProdutos() {
+            const tbody = document.querySelector('#tabela-produtos tbody');
+            tbody.innerHTML = '';
+            
+            if (produtos.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="3" style="text-align:center">Nenhum produto cadastrado.</td></tr>';
+                return;
+            }
+            
+            produtos.forEach(produto => {
+                const tr = document.createElement('tr');
+                const ingredientesText = produto.ingredientes.map(ing => 
+                    `${ing.nome}: ${ing.quantidade} ${ing.unidade}`
+                ).join(', ');
+                
+                tr.innerHTML = `
+                    <td>${produto.nome}</td>
+                    <td>${ingredientesText}</td>
+                    <td>
+                        <button class="btn-excluir-produto" onclick="excluirProduto(${produto.id})" style="background-color: var(--vermelho); padding: 5px 10px; font-size: 0.8rem;">Excluir</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+        
+        function excluirProduto(id) {
+            if (confirm('Tem certeza que deseja excluir este produto?')) {
+                produtos = produtos.filter(p => p.id !== id);
+                salvarDados();
+                atualizarTabelaProdutos();
+            }
+        }
+        
+        // --- LÓGICA DE ESTOQUE ---
+        
+        function salvarMaterialEstoque(e) {
+            e.preventDefault();
+            
+            const nomeMaterial = document.getElementById('nome-material').value;
+            const unidadeMaterial = document.getElementById('unidade-material').value;
+            const quantidadeMaterial = parseFloat(document.getElementById('quantidade-material').value);
+            const quantidadeMinima = parseFloat(document.getElementById('quantidade-minima').value);
+            
+            const novoMaterial = {
+                id: Date.now(),
+                nome: nomeMaterial,
+                unidade: unidadeMaterial,
+                quantidade: quantidadeMaterial,
+                quantidadeMinima: quantidadeMinima
+            };
+            
+            estoque.push(novoMaterial);
+            salvarDados();
+            
+            document.getElementById('form-estoque').reset();
+            atualizarTabelaEstoque();
+            carregarMateriasPrimasProdutos(); // Atualiza selects nos formulários
+            
+            alert('Material adicionado ao estoque!');
+        }
+        
+        function atualizarTabelaEstoque() {
+            const tbody = document.querySelector('#tabela-estoque tbody');
+            tbody.innerHTML = '';
+            const alertasContainer = document.getElementById('alertas-estoque');
+            alertasContainer.innerHTML = '';
+            
+            if (estoque.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center">Estoque vazio.</td></tr>';
+                return;
+            }
+            
+            estoque.forEach(material => {
+                const tr = document.createElement('tr');
+                const abaixoDoMinimo = material.quantidade <= material.quantidadeMinima;
+                
+                if (abaixoDoMinimo) {
+                    const alerta = document.createElement('div');
+                    alerta.className = 'alert alert-warning';
+                    alerta.innerHTML = `<strong>⚠️ ALERTA:</strong> ${material.nome} está baixo (${material.quantidade} ${material.unidade}). Mínimo: ${material.quantidadeMinima}`;
+                    alertasContainer.appendChild(alerta);
+                }
+                
+                tr.innerHTML = `
+                    <td>${material.nome}</td>
+                    <td>${material.unidade}</td>
+                    <td style="${abaixoDoMinimo ? 'color: var(--vermelho); font-weight: bold;' : ''}">${material.quantidade}</td>
+                    <td>${material.quantidadeMinima}</td>
+                    <td>
+                        <button onclick="editarQuantidadeEstoque(${material.id})" style="padding: 5px 10px; font-size: 0.8rem;">Editar</button>
+                        <button onclick="excluirMaterialEstoque(${material.id})" style="background-color: var(--vermelho); margin-left: 5px; padding: 5px 10px; font-size: 0.8rem;">Excluir</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+        
+        function editarQuantidadeEstoque(id) {
+            const material = estoque.find(m => m.id === id);
+            const novaQuantidade = prompt(`Nova quantidade para ${material.nome} (${material.unidade}):`, material.quantidade);
+            
+            if (novaQuantidade !== null && !isNaN(parseFloat(novaQuantidade)) && parseFloat(novaQuantidade) >= 0) {
+                material.quantidade = parseFloat(novaQuantidade);
+                salvarDados();
+                atualizarTabelaEstoque();
+            }
+        }
+        
+        function excluirMaterialEstoque(id) {
+            if (confirm('Excluir este material?')) {
+                // Verificar uso em produtos
+                const emUso = produtos.some(produto => produto.ingredientes.some(ing => ing.materiaPrimaId == id));
+                
+                if (emUso) {
+                    alert('Não é possível excluir: Este material faz parte da receita de um produto cadastrado.');
+                    return;
+                }
+                
+                estoque = estoque.filter(m => m.id !== id);
+                salvarDados();
+                atualizarTabelaEstoque();
+                carregarMateriasPrimasProdutos();
+            }
+        }
+        
+        // --- LÓGICA DE PEDIDOS (MODIFICADA) ---
+        
+        function carregarProdutosPedido() {
+            const container = document.getElementById('produtos-pedido');
+            container.innerHTML = '';
+            
+            if (produtos.length === 0) {
+                container.innerHTML = '<p>Nenhum produto cadastrado. Vá em "Produtos" para cadastrar.</p>';
+                return;
+            }
+            
+            produtos.forEach(produto => {
+                const div = document.createElement('div');
+                div.className = 'form-group';
+                div.style.flexDirection = 'row';
+                div.style.alignItems = 'center';
+                div.style.marginBottom = '10px';
+                
+                div.innerHTML = `
+                    <label style="min-width: 200px; margin-right: 10px; margin-bottom: 0;">${produto.nome} (kg):</label>
+                    <input type="number" class="quantidade-produto" data-produto-id="${produto.id}" min="0" step="0.1" value="0" style="width: 100px;">
+                `;
+                container.appendChild(div);
+            });
+        }
+        
+        function salvarPedido(e) {
+            e.preventDefault();
+            
+            const cliente = document.getElementById('cliente').value;
+            const dataEntrega = document.getElementById('data-entrega').value;
+            const observacao = document.getElementById('observacao').value;
+            
+            const produtosPedido = [];
+            document.querySelectorAll('.quantidade-produto').forEach(input => {
+                const qtd = parseFloat(input.value);
+                if (qtd > 0) {
+                    produtosPedido.push({
+                        produtoId: parseInt(input.getAttribute('data-produto-id')),
+                        quantidade: qtd
+                    });
+                }
+            });
+            
+            if (produtosPedido.length === 0) {
+                alert('Selecione a quantidade de pelo menos um produto.');
+                return;
+            }
+            
+            // Verificação de Estoque
+            const check = verificarEstoque(produtosPedido);
+            
+            if (!check.suficiente) {
+                alert('Estoque insuficiente:\n' + check.bloqueantes.join('\n'));
+                return;
+            }
+            
+            if (check.alertas.length > 0) {
+                if (!confirm('Atenção, estoque ficará baixo:\n' + check.alertas.join('\n') + '\n\nDeseja continuar?')) {
+                    return;
+                }
+            }
+            
+            // Criar e Salvar
+            const novoPedido = {
+                id: Date.now(),
+                cliente: cliente,
+                dataEntrega: dataEntrega,
+                observacao: observacao,
+                produtos: produtosPedido,
+                status: 'recebido',
+                dataCriacao: new Date().toISOString()
+            };
+            
+            pedidos.push(novoPedido);
+            atualizarEstoqueReal(produtosPedido); // Deduzir do estoque
+            salvarDados();
+            
+            document.getElementById('form-pedido').reset();
+            alert('Pedido registrado com sucesso!');
+            mostrarVerPedidos(); // Redireciona para o histórico
+        }
+        
+        function verificarEstoque(produtosPedido) {
+            const alertas = [];
+            const bloqueantes = [];
+            let suficiente = true;
+            
+            produtosPedido.forEach(item => {
+                const prod = produtos.find(p => p.id === item.produtoId);
+                if (!prod) return;
+                
+                prod.ingredientes.forEach(ing => {
+                    const mat = estoque.find(m => m.id == ing.materiaPrimaId);
+                    if (!mat) return;
+                    
+                    const qtdNecessaria = (item.quantidade / 10) * ing.quantidade;
+                    
+                    if (mat.quantidade < qtdNecessaria) {
+                        suficiente = false;
+                        bloqueantes.push(`- Falta ${mat.nome}: Precisa de ${qtdNecessaria.toFixed(2)}${mat.unidade}, tem ${mat.quantidade}${mat.unidade}`);
+                    } else if ((mat.quantidade - qtdNecessaria) <= mat.quantidadeMinima) {
+                        alertas.push(`- ${mat.nome} ficará abaixo do mínimo.`);
+                    }
+                });
+            });
+            return { suficiente, bloqueantes, alertas };
+        }
+        
+        function atualizarEstoqueReal(produtosPedido) {
+            produtosPedido.forEach(item => {
+                const prod = produtos.find(p => p.id === item.produtoId);
+                if (!prod) return;
+                
+                prod.ingredientes.forEach(ing => {
+                    const mat = estoque.find(m => m.id == ing.materiaPrimaId);
+                    if (mat) {
+                        mat.quantidade -= (item.quantidade / 10) * ing.quantidade;
+                    }
+                });
+            });
+            atualizarTabelaEstoque();
+        }
+        
+        function atualizarTabelaPedidos() {
+            const tbody = document.querySelector('#tabela-pedidos tbody');
+            const filtro = document.getElementById('filtro-status').value;
+            const msgSemPedidos = document.getElementById('msg-sem-pedidos');
+            
+            tbody.innerHTML = '';
+            let contador = 0;
+            
+            // Ordenar: Mais recente primeiro (Baseado no ID timestamp)
+            const pedidosOrdenados = [...pedidos].sort((a, b) => b.id - a.id);
+            
+            pedidosOrdenados.forEach(pedido => {
+                // Lógica de Filtro
+                if (filtro === 'ativos' && pedido.status === 'entregue') return;
+                if (filtro !== 'todos' && filtro !== 'ativos' && pedido.status !== filtro) return;
+                
+                contador++;
+                const tr = document.createElement('tr');
+                
+                let statusClass = '';
+                switch(pedido.status) {
+                    case 'recebido': statusClass = 'status-recebido'; break;
+                    case 'em produção': statusClass = 'status-producao'; break;
+                    case 'em distribuição': statusClass = 'status-distribuicao'; break;
+                    case 'entregue': statusClass = 'status-entregue'; break;
+                }
+                
+                // Formatar Data
+                const dataFormatada = new Date(pedido.dataEntrega).toLocaleDateString('pt-BR');
+                
+                tr.innerHTML = `
+                    <td>#${pedido.id.toString().slice(-4)}</td>
+                    <td>${pedido.cliente}</td>
+                    <td>${dataFormatada}</td>
+                    <td><span class="status-badge ${statusClass}">${pedido.status}</span></td>
+                    <td>
+                        <button onclick="verDetalhesPedido(${pedido.id})" style="padding: 5px 10px; font-size: 0.8rem;">Detalhes</button>
+                        ${pedido.status !== 'entregue' ? `<button onclick="avancarStatusPedido(${pedido.id})" style="margin-left: 5px; background-color: var(--azul); padding: 5px 10px; font-size: 0.8rem;">Avançar Status</button>` : ''}
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            if (contador === 0) {
+                msgSemPedidos.style.display = 'block';
+            } else {
+                msgSemPedidos.style.display = 'none';
+            }
+        }
+        
+        function verDetalhesPedido(id) {
+            const pedido = pedidos.find(p => p.id === id);
+            if (!pedido) return;
+            
+            const itens = pedido.produtos.map(item => {
+                const prod = produtos.find(p => p.id === item.produtoId);
+                return prod ? `- ${prod.nome}: ${item.quantidade}kg` : '- Produto removido';
+            }).join('\n');
+            
+            alert(`PEDIDO #${pedido.id}\n\nCliente: ${pedido.cliente}\nData: ${pedido.dataEntrega}\nStatus: ${pedido.status}\nObs: ${pedido.observacao}\n\nITENS:\n${itens}`);
+        }
+        
+        function avancarStatusPedido(id) {
+            const pedido = pedidos.find(p => p.id === id);
+            let novoStatus = '';
+            
+            if (pedido.status === 'recebido') novoStatus = 'em produção';
+            else if (pedido.status === 'em produção') novoStatus = 'em distribuição';
+            else if (pedido.status === 'em distribuição') novoStatus = 'entregue';
+            
+            if (novoStatus && confirm(`Mudar status de "${pedido.status}" para "${novoStatus}"?`)) {
+                pedido.status = novoStatus;
+                salvarDados();
+                atualizarTabelaPedidos();
+            }
+        }
+    </script>
+</body>
+</html>
